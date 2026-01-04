@@ -1,0 +1,50 @@
+.auth-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  animation: fadeIn 0.8s ease;
+}
+
+.auth-card {
+  width: 420px;
+  border-radius: 14px !important;
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  animation: slideUp 0.6s ease;
+}
+
+.logo {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #6a11cb;
+}
+
+.switch {
+  margin-top: 15px;
+  text-align: center;
+  color: #2575fc;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.switch:hover {
+  color: #6a11cb;
+}
+
+.fade {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}

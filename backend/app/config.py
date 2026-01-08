@@ -21,8 +21,6 @@ class Settings(BaseSettings):
         public_key_path (Path): Путь к публичному ключу для JWT.
         algorithm (str): Алгоритм для JWT (по умолчанию RS256).
         access_token_expire_minutes (int): Время жизни access token в минутах (по умолчанию 15).
-
-        generate_keys_if_not_exist:
     """
 
     # PostgreSQL / база данных

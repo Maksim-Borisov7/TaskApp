@@ -14,7 +14,7 @@ from backend.app.use_case.delete_task import DeleteTaskUseCase
 from backend.app.use_case.get_list_tasks import GetListTasksUseCase
 from backend.app.use_case.change_task_state import ChangeTaskStateUseCase
 
-router = APIRouter(prefix='/task', tags=["tasks"])
+router = APIRouter(prefix='/tasks', tags=["tasks"])
 
 
 @router.get("/get/", summary="Получение списка задач пользователя")

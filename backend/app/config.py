@@ -1,5 +1,7 @@
-from pathlib import Path
+import subprocess
+
 from pydantic_settings import BaseSettings
+from pathlib import Path
 
 
 class Settings(BaseSettings):
@@ -19,6 +21,8 @@ class Settings(BaseSettings):
         public_key_path (Path): Путь к публичному ключу для JWT.
         algorithm (str): Алгоритм для JWT (по умолчанию RS256).
         access_token_expire_minutes (int): Время жизни access token в минутах (по умолчанию 15).
+
+        generate_keys_if_not_exist:
     """
 
     # PostgreSQL / база данных
@@ -41,6 +45,40 @@ class Settings(BaseSettings):
         env_file = ".env"
         env_file_encoding = "utf-8"
 
+    def generate_keys_if_not_exist(self):
+        """Генерирует приватный и публичный ключ"""
+        certs_dir = self.private_key_path.parent
+        private_key_path = self.private_key_path
+        public_key_path = self.public_key_path
 
-# Экземпляр настроек, который импортируется по всему приложению
+        if private_key_path.exists() and public_key_path.exists():
+            return
+
+        print("Ключи JWT не найдены → генерируем новые для разработки...")
+
+        certs_dir.mkdir(parents=True, exist_ok=True)
+
+        try:
+            # Генерация приватного ключа
+            subprocess.run(
+                ["openssl", "genrsa", "-out", str(private_key_path), "2048"],
+                check=True,
+                capture_output=True,
+                text=True
+            )
+
+            # Извлечение публичного ключа
+            subprocess.run(
+                ["openssl", "rsa", "-in", str(private_key_path), "-pubout", "-out", str(public_key_path)],
+                check=True,
+                capture_output=True,
+                text=True
+            )
+
+            print(f"Ключи сгенерированы:\n  {private_key_path}\n  {public_key_path}")
+        except subprocess.CalledProcessError as e:
+            print("Ошибка генерации ключей:", e.stderr)
+            raise RuntimeError("Не удалось сгенерировать JWT-ключи")
+
+
 settings = Settings()

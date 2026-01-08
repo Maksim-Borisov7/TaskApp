@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 
+from backend.app.config import settings
 from backend.app.database.database import database
 from backend.app.logs.logger import logger
 from fastapi import FastAPI
@@ -22,6 +23,7 @@ async def lifespan(app: FastAPI):
     """
     try:
         logger.info("Запуск сервера")
+        settings.generate_keys_if_not_exist()
         await database.create_table()
         logger.info("Таблицы созданы")
         yield

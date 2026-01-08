@@ -5,7 +5,6 @@ from jose import jwt
 
 def encode_jwt(
         payload: dict,
-        private_key=settings.private_key_path.read_text(),
         algorithm=settings.algorithm,
         expire_minutes: int = settings.access_token_expire_minutes,
         expire_timedelta: timedelta | None = None,
@@ -34,6 +33,8 @@ def encode_jwt(
     Returns:
         str: Сформированный JWT-токен.
     """
+    private_key = settings.private_key_path.read_text()
+
     to_encode = payload.copy()
     now = datetime.now(timezone.utc)
 
@@ -57,7 +58,6 @@ def encode_jwt(
 
 def decode_jwt(
         token: str | bytes,
-        public_key=settings.public_key_path.read_text(),
         algorithm=settings.algorithm,
 ) -> dict:
     """
@@ -75,6 +75,7 @@ def decode_jwt(
     Returns:
         dict: Декодированное содержимое JWT (payload).
     """
+    public_key = settings.public_key_path.read_text()
     decoded = jwt.decode(
         token,
         public_key,
